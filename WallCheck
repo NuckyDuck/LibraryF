@@ -1,0 +1,68 @@
+local function WallCheck(startPos, endPos)
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterDescendantsInstances = {LocalPlayer.Character}
+    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+    local result = workspace:Raycast(startPos, (endPos - startPos).Unit * (_G.FOV_Radius + 1), raycastParams)
+    if result then
+        return result.Position
+    else
+        return endPos
+    end
+end
+
+local function CursorLock()
+    UIS.MouseBehavior = Enum.MouseBehavior.LockCenter
+end
+
+local function UnLockCursor()
+    HoldingM2 = false 
+    Active = false 
+    Lock = false 
+    UIS.MouseBehavior = Enum.MouseBehavior.Default
+end
+
+function FindNearestPlayer()
+    -- Your existing code for finding the nearest player goes here...
+end
+
+function GetClosestPlayerToMouse()
+    -- Your existing code for finding the closest player to the mouse goes here...
+end
+
+UIS.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+        HoldingM2 = true
+        Active = true
+        Lock = true
+        if Active then
+            local The_Enemy = nil
+            
+            if _G.Character_Find_Method == 1 then
+                The_Enemy = FindNearestPlayer()
+            elseif _G.Character_Find_Method == 2 then
+                The_Enemy = GetClosestPlayerToMouse()
+            end
+            while HoldingM2 do task.wait(.000001)
+                if Lock and The_Enemy ~= nil then
+                    local Future = nil
+                    if _G.PredictUserMovement == true then
+                        Future = The_Enemy[_G.AimPart].CFrame + (The_Enemy[_G.AimPart].Velocity * Epitaph + HeadOffset)
+                    elseif _G.PredictUserMovement == false then
+                        Future = The_Enemy[_G.AimPart].CFrame
+                    end
+                    MyView.CFrame = CFrame.lookAt(MyView.CFrame.Position, WallCheck(MyView.CFrame.Position, Future.Position))
+                    CursorLock()
+                end
+            end
+        end
+    end
+end)
+
+UIS.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+        UnLockCursor()
+    end
+end)
+
+-- Rest of your script...
