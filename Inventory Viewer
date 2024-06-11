@@ -2,40 +2,23 @@ print('hi0')
 local InventoryUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/RelkzzRebranded/agogogogos/main/inventoryUi.lua"))()
 getgenv().inventoryviewer = {}
 local Environment = getgenv().inventoryviewer
-
 local inCamera = workspace.CurrentCamera
 local inRunService = game:GetService("RunService")
-local inUIS = game:GetService("UserInputService")
 local inRepStorage = game:GetService("ReplicatedStorage")
 local inEntities = game:GetService("Players")
 local inLocalPlayer = inEntities.LocalPlayer
 local inMouse = inLocalPlayer:GetMouse()
-print('hi0.5')
 local INVENTORYINSTANCES = {
     MainFrame = InventoryUI.MainFrame,
     VictimText = InventoryUI.MainFrame.VictimName,
     InventoryText = InventoryUI.MainFrame.List
 }
 InventoryUI.Parent = gethui()
-print('hi')
-
-
 local PlayersFolder = inRepStorage.Players
-
 Environment.Settings = {
-    Enabled = false,
-    TriggerKey = 'X',
+    Enabled = true, -- Automatically enable the inventory viewer
     Radius = 2000
 }
-print('hi2')
-inUIS.InputBegan:Connect(function(Input, process)
-    if process then return end
-
-    if Input.KeyCode == Enum.KeyCode[Environment.Settings.TriggerKey] then
-        Environment.Settings.Enabled = not Environment.Settings.Enabled
-    end
-end)
-print('hi3')
 local function LoadInventoryViewer()
     inRunService.RenderStepped:Connect(function()
         local dist = math.huge
@@ -70,10 +53,8 @@ local function LoadInventoryViewer()
             closest_character:FindFirstChild('Humanoid') and
             closest_character.Humanoid.Health > 0 then
                 InventoryUI.Enabled = true
-
                 local playerInventory = PlayersFolder[closest_character.Name] and PlayersFolder[closest_character.Name].Inventory
                 local playerClothing = PlayersFolder[closest_character.Name] and PlayersFolder[closest_character.Name].Clothing
-
                 local PrimaryLoot = ""
                 local WearablesLoot = ""
                 if playerInventory and playerClothing then
@@ -85,26 +66,22 @@ local function LoadInventoryViewer()
                         WearablesLoot ..= clothes.Name .. '\n'
                     end
                 end
-
                 if PrimaryLoot ~= "" then
                     PrimaryLoot = PrimaryLoot:sub(1, -2) 
                 else
                     PrimaryLoot = "NO WEAPONS"
                 end
-
                 if WearablesLoot ~= "" then
                     WearablesLoot = WearablesLoot:sub(1, -2) 
                 else
                     WearablesLoot = "NAKED"
                 end
-
                 INVENTORYINSTANCES.VictimText.Text = closest_character.Name
-                INVENTORYINSTANCES.InventoryText.Text = `PRIMARY:\n{PrimaryLoot}\nWearables:\n{WearablesLoot}`
+                INVENTORYINSTANCES.InventoryText.Text = "PRIMARY:\n" .. PrimaryLoot .. "\nWearables:\n" .. WearablesLoot
             else
                 InventoryUI.Enabled = false
             end
         end
     end)    
 end
-print('hi4')
 LoadInventoryViewer(); print('INVENTORY VIEWER LOADED')
