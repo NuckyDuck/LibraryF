@@ -1,20 +1,56 @@
-Section1A:AddToggle({
-    text = "Boxes",
-    state = false,
-    risky = false,
-    tooltip = "See Players",
-    flag = "Toggle_1",
-    callback = function(v)
-        print("Value:", v)
-        if v then
-                
-            local scriptURL = "https://raw.githubusercontent.com/Whisperware/LibraryF/main/ESP"
-            local scriptContent = game:HttpGet(scriptURL)
-            loadstring(scriptContent)() 
-            print("Fog script executed!")
-        else
-            print("Fog script turned off.")
-            destroy(v)
-        end
+local FillColor = Color3.fromRGB(175, 25, 255)
+local DepthMode = "AlwaysOnTop"
+local FillTransparency = 0.5
+local OutlineTransparency = 0
+
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+local connections = {}
+
+local Storage = Instance.new("Folder")
+Storage.Parent = CoreGui
+Storage.Name = "Highlight_Storage"
+
+local OutlineColorFlag = "Color_1" -- Flag for the outline color
+
+-- Function to get the outline color based on the flag value
+local function getOutlineColor()
+    local colorFlag = settings().Studio.UserSettings:GetService("UserGameSettings").SavedUserSettings:GetAttribute(OutlineColorFlag)
+    return Color3.fromRGB(colorFlag[1], colorFlag[2], colorFlag[3])
+end
+
+local function Highlight(plr)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = plr.Name
+    Highlight.FillColor = FillColor
+    Highlight.DepthMode = DepthMode
+    Highlight.FillTransparency = FillTransparency
+    Highlight.OutlineColor = getOutlineColor() -- Set the outline color based on the flag
+    Highlight.OutlineTransparency = OutlineTransparency
+    Highlight.Parent = Storage
+    
+    local plrchar = plr.Character
+    if plrchar then
+        Highlight.Adornee = plrchar
     end
-})
+
+    connections[plr] = plr.CharacterAdded:Connect(function(char)
+        Highlight.Adornee = char
+    end)
+end
+
+Players.PlayerAdded:Connect(Highlight)
+for i,v in next, Players:GetPlayers() do
+    Highlight(v)
+end
+
+Players.PlayerRemoving:Connect(function(plr)
+    local plrname = plr.Name
+    if Storage[plrname] then
+        Storage[plrname]:Destroy()
+    end
+    if connections[plr] then
+        connections[plr]:Disconnect()
+    end
+end)
