@@ -1,11 +1,5 @@
-local FillColor = Color3.fromRGB(255,255,255)
-local DepthMode = "AlwaysOnTop"
-local FillTransparency = 0.5
-local OutlineColor = Color3.fromRGB(255,255,255)
-local OutlineTransparency = 0
-
-local CoreGui = game:FindService("CoreGui")
-local Players = game:FindService("Players")
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
 local lp = Players.LocalPlayer
 local connections = {}
 
@@ -13,13 +7,16 @@ local Storage = Instance.new("Folder")
 Storage.Parent = CoreGui
 Storage.Name = "Highlight_Storage"
 
+local DefaultFillColor = Color3.fromRGB(255, 255, 255)
+local FillColor = DefaultFillColor -- Initialize with default color
+
 local function Highlight(plr)
     local Highlight = Instance.new("Highlight")
     Highlight.Name = plr.Name
     Highlight.FillColor = FillColor
-    Highlight.DepthMode = DepthMode
-    Highlight.FillTransparency = FillTransparency
-    Highlight.OutlineColor = OutlineColor
+    Highlight.DepthMode = "AlwaysOnTop"
+    Highlight.FillTransparency = 0.5
+    Highlight.OutlineColor = Color3.new(255, 255, 255)
     Highlight.OutlineTransparency = 0
     Highlight.Parent = Storage
     
@@ -34,8 +31,8 @@ local function Highlight(plr)
 end
 
 Players.PlayerAdded:Connect(Highlight)
-for i,v in next, Players:GetPlayers() do
-    Highlight(v)
+for _, player in ipairs(Players:GetPlayers()) do
+    Highlight(player)
 end
 
 Players.PlayerRemoving:Connect(function(plr)
