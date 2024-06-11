@@ -1,10 +1,11 @@
-local FillColor = Color3.fromRGB(175, 25, 255)
+local FillColor = Color3.fromRGB(255,255,255)
 local DepthMode = "AlwaysOnTop"
 local FillTransparency = 0.5
+local OutlineColor = Color3.fromRGB(255,255,255)
 local OutlineTransparency = 0
 
-local CoreGui = game:GetService("CoreGui")
-local Players = game:GetService("Players")
+local CoreGui = game:FindService("CoreGui")
+local Players = game:FindService("Players")
 local lp = Players.LocalPlayer
 local connections = {}
 
@@ -12,22 +13,14 @@ local Storage = Instance.new("Folder")
 Storage.Parent = CoreGui
 Storage.Name = "Highlight_Storage"
 
-local OutlineColorFlag = "Color_1" -- Flag for the outline color
-
--- Function to get the outline color based on the flag value
-local function getOutlineColor()
-    local colorFlag = settings().Studio.UserSettings:GetService("UserGameSettings").SavedUserSettings:GetAttribute(OutlineColorFlag)
-    return Color3.fromRGB(colorFlag[1], colorFlag[2], colorFlag[3])
-end
-
 local function Highlight(plr)
     local Highlight = Instance.new("Highlight")
     Highlight.Name = plr.Name
     Highlight.FillColor = FillColor
     Highlight.DepthMode = DepthMode
     Highlight.FillTransparency = FillTransparency
-    Highlight.OutlineColor = getOutlineColor() -- Set the outline color based on the flag
-    Highlight.OutlineTransparency = OutlineTransparency
+    Highlight.OutlineColor = OutlineColor
+    Highlight.OutlineTransparency = 0
     Highlight.Parent = Storage
     
     local plrchar = plr.Character
