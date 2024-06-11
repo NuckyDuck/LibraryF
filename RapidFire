@@ -1,0 +1,54 @@
+-- Function to change the fire rate of the weapon
+local function changeFireRate(weapon, newFireRate)
+    -- Check if the weapon object and its FireRate property exist
+    if weapon and weapon:FindFirstChild("FireRate") then
+        -- Update the FireRate property to the new value
+        weapon.FireRate.Value = newFireRate
+        print("Fire rate changed to " .. newFireRate .. " seconds per shot.")
+    else
+        print("Weapon or FireRate property not found.")
+    end
+end
+
+-- Function to detect the current weapon the player is holding
+local function detectCurrentWeapon(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    
+    if character then
+        local currentWeapon = character:FindFirstChildOfClass("Tool")
+        
+        if currentWeapon then
+            -- Check if the current weapon has a FireRate property
+            if currentWeapon:FindFirstChild("FireRate") then
+                return currentWeapon, currentWeapon.FireRate.Value
+            else
+                print("FireRate property not found for the current weapon.")
+            end
+        else
+            print("No weapon found.")
+        end
+    else
+        print("Character not found.")
+    end
+    
+    return nil, nil
+end
+
+local function checkPlayerWeapon(player)
+    while true do
+        player.CharacterAdded:Wait()
+        
+        local currentWeapon, currentFireRate = detectCurrentWeapon(player)
+        
+        if currentWeapon and currentFireRate then
+            changeFireRate(currentWeapon, currentFireRate)
+        end
+        
+        wait(1)
+    end
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+    -- Start checking the player's weapon
+    checkPlayerWeapon(player)
+end)
