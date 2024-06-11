@@ -1,0 +1,20 @@
+Section1A:AddToggle({
+    text = "Boxes",
+    state = false,
+    risky = false,
+    tooltip = "See Players",
+    flag = "Toggle_1",
+    callback = function(v)
+        print("Value:", v)
+        if v then
+                
+            local scriptURL = "https://raw.githubusercontent.com/Whisperware/LibraryF/main/ESP"
+            local scriptContent = game:HttpGet(scriptURL)
+            loadstring(scriptContent)() 
+            print("Fog script executed!")
+        else
+            print("Fog script turned off.")
+            destroy(v)
+        end
+    end
+})
