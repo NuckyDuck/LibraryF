@@ -1,0 +1,22 @@
+local parentPath = game.Workspace.SpawnerZones.Foliage
+
+-- Function to recursively delete MeshParts in a given folder or model
+local function deleteMeshParts(parent)
+    for _, child in pairs(parent:GetChildren()) do
+        if child:IsA("Model") then
+            -- If the child is a Model, recursively search within it
+            deleteMeshParts(child)
+        elseif child:IsA("Folder") then
+            -- If the child is a Folder, recursively search within it
+            deleteMeshParts(child)
+        elseif child:IsA("MeshPart") then
+            -- If the child is a MeshPart, delete it
+            child:Destroy()
+        end
+    end
+end
+
+-- Start the deletion process from the specified parent path
+deleteMeshParts(parentPath)
+
+print("All MeshParts within the specified path have been deleted.")
