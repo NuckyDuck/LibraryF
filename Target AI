@@ -1,0 +1,26 @@
+local AIToggleEnabled = false
+
+-- Function to toggle AI within AIZones
+local function ToggleAIZoneAI(enabled)
+    AIToggleEnabled = enabled
+    local AIZones = game.Workspace:FindFirstChild("AIZones")
+    if AIZones then
+        for _, zone in pairs(AIZones:GetChildren()) do
+            if zone:IsA("Folder") then
+                for _, entity in pairs(zone:GetChildren()) do
+                    if entity:IsA("Model") then
+                        -- Assuming AI models are located in each zone folder
+                        entity.Disabled = not enabled
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Connect toggling AI based on a different script's toggle
+_G.ToggleAIZoneAI = function()
+    ToggleAIZoneAI(not AIToggleEnabled)
+end
+
+-- Your existing script continues...
