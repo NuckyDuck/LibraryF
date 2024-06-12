@@ -9,7 +9,13 @@ local ESP_UPDATE_INTERVAL = 5 -- Update interval in seconds
 
 local function createESP(bot)
     if bot and bot:FindFirstChild("Humanoid") then
+        local existingGui = bot:FindFirstChild("ESP_Gui")
+        if existingGui then
+            return existingGui
+        end
+        
         local billboardGui = Instance.new("BillboardGui")
+        billboardGui.Name = "ESP_Gui"
         billboardGui.Adornee = bot:FindFirstChild("HumanoidRootPart") or bot.PrimaryPart or bot:FindFirstChild("Head")
         billboardGui.AlwaysOnTop = true
         billboardGui.Size = UDim2.new(0, 100, 0, 40)
