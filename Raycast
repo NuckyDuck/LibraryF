@@ -1,0 +1,31 @@
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local function StartRaycasting()
+    local function RaycastFromPlayerToMouse(player)
+        local mouse = player:GetMouse()
+        local character = player.Character
+        if character then
+            local head = character:FindFirstChild("Head")
+            if head then
+                local ray = Ray.new(head.Position, (mouse.Hit.p - head.Position).unit * 300)
+                local part, position = Workspace:FindPartOnRay(ray, player.Character, false, true)
+                return part, position
+            end
+        end
+        return nil, nil
+    end
+    
+    RunService.RenderStepped:Connect(function()
+        for _, player in ipairs(Players:GetPlayers()) do
+            local part, position = RaycastFromPlayerToMouse(player)
+            if part then
+                -- Do something with the hit part and position
+                print("Player " .. player.Name .. " hit " .. part.Name .. " at position " .. tostring(position))
+            end
+        end
+    end)
+end
+
+StartRaycasting()
