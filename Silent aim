@@ -1,0 +1,50 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+local WorldToScreen = Camera.WorldToScreenPoint
+local WorldToViewportPoint = Camera.WorldToViewportPoint
+
+local ValidTargetParts = {"Head", "HumanoidRootPart"}
+
+local AimRadius = 180 -- Change this value to adjust the maximum radius of the FOV circle
+
+local mouse_box = Drawing.new("Square")
+mouse_box.Visible = true 
+mouse_box.ZIndex = 999 
+mouse_box.Color = Color3.fromRGB(54, 57, 241)
+mouse_box.Thickness = 20 
+mouse_box.Size = Vector2.new(20, 20)
+mouse_box.Filled = true 
+
+local fov_circle = Drawing.new("Circle")
+fov_circle.Thickness = 1
+fov_circle.NumSides = 100
+fov_circle.Radius = AimRadius
+fov_circle.Filled = false
+fov_circle.Visible = true
+fov_circle.ZIndex = 999
+fov_circle.Transparency = 1
+fov_circle.Color = Color3.fromRGB(54, 57, 241)
+
+local function IsInFOV(position)
+    local cursorPosition = Vector2.new(Mouse.X, Mouse.Y)
+    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+    local distance = (cursorPosition - center).magnitude
+    return distance <= AimRadius
+end
+
+local function UpdateFOV()
+    local cursorPosition = Vector2.new(Mouse.X, Mouse.Y)
+    fov_circle.Position = cursorPosition
+    if IsInFOV() then
+        fov_circle.Visible = true
+    else
+        fov_circle.Visible = false
+    end
+end
+
+RunService.RenderStepped:Connect(UpdateFOV)
