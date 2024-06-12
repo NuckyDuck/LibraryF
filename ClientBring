@@ -15,7 +15,7 @@ local inMouse = inLocalPlayer:GetMouse()
 
 local PlayersFolder = inRepStorage.Players
 
-local Title = [[Brickmane]]
+local Title = [[Projectware.exe ClientBring]]
 local Desc = [[Fuck Campers]]
 
 Environment.Settings = {
