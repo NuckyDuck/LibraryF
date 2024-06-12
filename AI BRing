@@ -13,12 +13,12 @@ local AIZonesFolder = workspace:WaitForChild("AIZones") -- Assuming the AI are c
 local inLocalPlayer = game:GetService("Players").LocalPlayer
 local inMouse = inLocalPlayer:GetMouse()
 
-local Title = [[Brickmane]]
-local Desc = [[Fuck Campers]]
+local Title = [[Projectware.exe Cbring for AI]]
+local Desc = [[Fuck AIs]]
 
 Environment.Settings = {
     Enabled = false,
-    TriggerKey = 'X',
+    TriggerKey = 'B',
     Radius = 2000
 }
 
