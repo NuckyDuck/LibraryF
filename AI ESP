@@ -5,7 +5,7 @@ local Player = Players.LocalPlayer -- Assuming you're using this for local playe
 local ESP_ENABLED = true
 local ESP_COLOR = Color3.fromRGB(255, 255, 255)
 local ESP_FONT_SIZE = 10
-local ESP_UPDATE_INTERVAL = 1 -- Update interval in seconds
+local ESP_UPDATE_INTERVAL = 5 -- Update interval in seconds
 
 local function createESP(bot)
     if bot and bot:FindFirstChild("Humanoid") then
