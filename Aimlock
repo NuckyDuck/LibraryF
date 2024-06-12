@@ -174,7 +174,7 @@ end)
 UIS.InputBegan:Connect(function(input, gameProcessedEvent)
     if gameProcessedEvent then return end
     if input.UserInputType == Enum.UserInputType.Keyboard then
-        if input.KeyCode == Enum.KeyCode.Z then
+        if input.KeyCode == Enum.KeyCode.I then
             _G.TeamCheck = not _G.TeamCheck
             game.StarterGui:SetCore("SendNotification", {
 				Title = "Aimbot"; --the notifications
@@ -182,7 +182,7 @@ UIS.InputBegan:Connect(function(input, gameProcessedEvent)
 				Duration = 2;
 			})
         end
-        if input.KeyCode == Enum.KeyCode.C then
+        if input.KeyCode == Enum.KeyCode.O then
             _G.Player_ESP = not _G.Player_ESP
             game.StarterGui:SetCore("SendNotification", {
 				Title = "Aimbot"; --the notifications
@@ -190,12 +190,12 @@ UIS.InputBegan:Connect(function(input, gameProcessedEvent)
 				Duration = 2;
 			})
         end
-        if input.KeyCode == Enum.KeyCode.U then
+        if input.KeyCode == Enum.KeyCode.P then
             _G.PredictUserMovement = not _G.PredictUserMovement
             game.StarterGui:SetCore("SendNotification", {
-				Title = "Aimbot"; --the notifications
+				Title = "READ THIS!!"; --the notifications
 				Text = "Predict movement: " ..tostring(_G.PredictUserMovement); 
-				Duration = 2;
+				Duration = 15;
 			})
         end
     end
