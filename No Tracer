@@ -1,0 +1,5 @@
+local ammo = game.ReplicatedStorage.AmmoTypes
+
+for _, v in pairs(ammo:GetChildren()) do
+    v:SetBoolean("Tracer", false)  -- Assuming SetBoolean is a method you've defined
+end
