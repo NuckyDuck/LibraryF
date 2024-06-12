@@ -5,7 +5,7 @@ local Settings = {
     Thickness = 1, -- Thickness of the line (Overruled by AutoThickness if activated)
     Transparency = 1, -- 1 Visible - 0 Not Visible
     AutoThickness = true, -- Makes Thickness above futile, scales according to distance, good for less encumbered screen
-    Length = 15, -- In studs of the line
+    Length = 7, -- In studs of the line
     Smoothness = 0.2 -- 0.01 - Less Smooth(Faster), 1 - Smoother (Slower)
 }
 
