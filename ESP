@@ -13,10 +13,12 @@ local DISTANCE_UPDATE_INTERVAL = 0.2
 -- Toggle states
 local inventoryVisible = true
 local armorVisible = true
+local espEnabled = true  -- Estado del ESP (encendido por defecto)
 
 -- Keybinds
 local inventoryToggleKey = Enum.KeyCode.I  -- Inventory toggle key
 local armorToggleKey = Enum.KeyCode.O      -- Armor toggle key
+local espToggleKey = Enum.KeyCode.P        -- ESP toggle key
 
 -- Helper function to get a valid position part of the character
 local function getPositionPart(character)
@@ -92,6 +94,15 @@ local function createESP(player)
     local inventoryTags, armorTags = {}, {}
 
     local function updateESP()
+        if not espEnabled then
+            box.Visible = false
+            nameTag.Visible = false
+            distanceTag.Visible = false
+            inventoryTags = clearTags(inventoryTags)
+            armorTags = clearTags(armorTags)
+            return
+        end
+
         local character = player.Character
         if not character then
             return
@@ -228,7 +239,7 @@ for _, player in ipairs(Players:GetPlayers()) do
     end
 end
 
--- Toggle functions for inventory and armor visibility
+-- Toggle functions
 local function toggleInventory()
     inventoryVisible = not inventoryVisible
 end
@@ -237,13 +248,18 @@ local function toggleArmor()
     armorVisible = not armorVisible
 end
 
--- Listen for key presses to toggle inventory and armor visibility
+local function toggleESP()
+    espEnabled = not espEnabled
+end
+
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if not gameProcessed then
         if input.KeyCode == inventoryToggleKey then
             toggleInventory()
         elseif input.KeyCode == armorToggleKey then
             toggleArmor()
+        elseif input.KeyCode == espToggleKey then  -- Verifica si se presionó la tecla de alternar ESP
+            toggleESP()
         end
     end
 end)
